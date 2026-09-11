@@ -1,318 +1,355 @@
+// array inicial de productos
+const productos =["CLAVO","TUERCA","TORNILLO","ARANDELA","MARTILLO"];
 
-let stockTuercas = 10;
-let stockTornillos = 10;
-let stockClavos = 100;
-const sumarCantidades = (stockActual, stockIngresado) => stockActual + stockIngresado;
-const restarCantidades = (stockActual, stockIngresado) => stockActual - stockIngresado;
-
+// funcion principal
 function functionPrincipalSimulador(){
 
   console.log("LOG - ----------------------------------");
-  console.log("LOG - 0000 - INICIO PROCESO");
-  console.log("LOG - ----------------------------------");
+  console.log("LOG - 0000 - PROCESO PRINCIPAL - INICIO");
+  console.log("LOG - ----------------------------------"); 
 
-
-  //let continuarProceso;
-  let articulo;
-  let tipoOperacion;
-  let cantidad;
-
-  alert("Sistema de Carga/Descarga de Stock de Inventarios de Articulos");
-
-  informarStock();
+  let salir = false;
 
   do {
 
-       articulo = ingresarArticulo();
-       tipoOperacion = ingresarTipoOperacion();
-       cantidad = ingresarCantidad();
+      switch(seleccionarOpcionMenu()){
+            case 0:
+                 alert("Debe ingresar un valor, vuelva a ingresar la opcion");
+                 break;
+            case 1:
+                 ingresarArticuloMenu();
+                 break;
+            case 2:
+                 buscarArticuloMenu();
+                 break;   
+            case 3:
+                 modificarArticuloMenu();
+                 break;   
+            case 4:
+                 eliminarArticuloMenu();
+                 break;   
+            case 5:
+                 eliminarArticuloPrimeroMenu();
+                 break;   
+            case 6:
+                 eliminarArticuloUltimoMenu();
+                 break; 
+            case 7:
+                 listarArticulosMenu();
+                 break; 
+            case 8:
+                 salir = true;
+                 break;
+            default:
+                 alert("Opcion invalida, vuelva a ingresar la opcion");
+      };
 
-       ejecutarTransaccion(articulo, tipoOperacion, cantidad);
-
-       //continuarProceso = evaluarDecision();
-
-       informarStock();
-
-  } while (evaluarDecision());
-  //} while (continuarProceso);
+  } while (!salir);
 
   console.log("LOG - ----------------------------------");
-  console.log("LOG - 9999 - FIN PROCESO");
+  console.log("LOG - 9999 - PROCESO PRINCIPAL - FIN ");
   console.log("LOG - ----------------------------------");
-
 
 };
 
+
+// ejecuta la funcion principal
 functionPrincipalSimulador();
 
-//
-function informarStock(){
+/*
+  FUNCIONES PRIMARIAS
+*/
+function seleccionarOpcionMenu(){
 
-  console.log("LOG - informarStock - 0000");
+  console.log("LOG - SeleccionarOpcionMenu - 0000");
 
-  alert("Stock Actual:\n" +
-        " - TORNILLOS: " + stockTornillos + "\n"+
-        " - TUERCAS: " + stockTuercas + "\n"+
-        " - CLAVOS: " + stockClavos + ""
-  );
-
+  //let opcionMenu = prompt("Seleccione opcion: \n" + 
+  let opcionMenu = prompt("SISTEMA DE PRODUCTOS\n\n" + 
+                          "Seleccione opcion:\n" + 
+                          " 1-Ingrese Articulo\n" +
+                          " 2-Buscar Articulo\n" +
+                          " 3-Modificar Articulo\n" +
+                          " 4-Eliminar Articulo por Posicion\n" +
+                          " 5-Eliminar Primer Articulo\n" +
+                          " 6-Eliminar Ultimo Articulo\n" +
+                          " 7-Listar Articulos\n" +
+                          " 8-Salida"
+                         );
+  console.log("LOG - seleccionarOpcionMenu - 0010 - opcionMenu = " + opcionMenu);
   
+  if (esNulo(opcionMenu)){
+     opcionMenu = 0;
+  };
 
-  console.log("LOG - informarStock - 0010 - Stock Actual "  );
-  console.log("LOG - informarStock - 0010 - TORNILLOS: " + stockTornillos );
-  console.log("LOG - informarStock - 0010 - TUERCAS: " + stockTuercas );
-  console.log("LOG - informarStock - 0010 - CLAVOS: " + stockClavos );
+  console.log("LOG - seleccionarOpcionMenu - 9999");
 
+  return parseInt(opcionMenu);     
 };
 
-//
-function ingresarArticulo (){
+function ingresarArticuloMenu(){
+
+  console.log("LOG - ingresarArticuloMenu - 0000");
+
+  let articulo = ingresarArticuloValidado();
+  let orden = ingresarOrden();
+  console.log("orden: " + orden);
+  if (orden == "P"){
+      productos.unshift(articulo.toUpperCase());
+      console.log("unshift");
+  } else {
+      productos.push(articulo.toUpperCase());
+      console.log("push");
+  };
   
-  console.log("LOG - ingresarArticulo - 0000") ;
-
-  let articuloIngresado;
-  let esArticuloValido;  
-
-  do {
-
-        articuloIngresado = prompt("Ingrese un articulo valido:\nTORNILLOS\nTUERCAS\nCLAVOS");
-
-        switch (articuloIngresado.toUpperCase()) {
-               case "TORNILLOS":
-                    esArticuloValido = true;
-                    break;
-               case "TUERCAS":
-                    esArticuloValido = true;
-                    break;
-               case "CLAVOS":
-                    esArticuloValido = true;
-                    break;
-               case "":
-                    esArticuloValido = false;
-                    alert("ERROR: Debe ingresar un valor.");       
-                    break;
-                default:
-                    alert("ERROR: El articulo " + articuloIngresado + " no existe.");                        
-                    esArticuloValido = false;                
-             }
-      } while (!esArticuloValido);
-
-  console.log("LOG - ingresarArticulo - 9999 - articulo ingresado: " + articuloIngresado) ;    
-  return articuloIngresado;
-
+  console.log("LOG - ingresarArticuloMenu - 9999");
 };
 
-//
-function ingresarTipoOperacion (){
+function buscarArticuloMenu(){
 
-  console.log("LOG - ingresarTipoOperacion - 0000") ;
+  console.log("LOG - 0000 - buscarArticulo");
 
-  let tipoOperacionIngresada;
-  let esTipoOperacionValida;  
+  let articulo;
+  let salir;
 
   do {    
 
-        tipoOperacionIngresada = prompt("Ingrese Tipo de Operacion:\n 1 para ALTA DE STOCK\n 2 para BAJA DE STOCK: ");
-        
-        switch (tipoOperacionIngresada) {
-               case "1":
-                    esTipoOperacionValida = true;
-                    break;
-               case "2":
-                    esTipoOperacionValida = true;
-                    break;
-               case "":
-                    alert("ERROR: Debe ingresar un valor.");
-                    esTipoOperacionValida = false;
-                    break;
-               default:
-                    alert("ERROR: El tipo operacion "+ tipoOperacionIngresada + " no existe.");
-                    esTipoOperacionValida = false;
-        };
-
-  } while (!esTipoOperacionValida) ;    
-
-  console.log("LOG - ingresarTipoOperacion - 9999 - tipo de operacion ingresada: " + tipoOperacionIngresada) ;    
-  return tipoOperacionIngresada;
-
-};
-
-function ingresarCantidad (){
-
-  console.log("LOG - ingresarCantidad - 0000") ;
-
-  let cantidadIngresada;
-  let esCantidadValida;
-
-  do {
-
-        cantidadIngresada = prompt("Ingrese la cantidad de articulos valida(valor positivo): ");
-
-        if (cantidadIngresada == "") {
-                            
-           alert("Debe Ingresar un Valor");
-           esCantidadValida = false;
-            
-        } else {
+       articulo = prompt("(Buscar Articulo) - Nombre de articulo: ");
+ 
+       if (esNulo(articulo)) {
+                                    
+                  alert("Debe Ingresar un Valor");
+                  salir = false;
+      } else { 
   
-           if (isNaN(Number(cantidadIngresada))) {
+             if (existeArticulo(articulo)){
+                 alert("El articulo " + articulo + ", SI existe, esta en la posicion " + (parseInt(obtenerIndiceArticulo(articulo))+1));
+             } else {
+                 alert("El articulo " + articulo + ", NO existe. ");
+             };    
+             salir = true;
+       };
 
-              alert("ERROR: Debe Ingresar un Valor NUMERICO, este valor es erroneo: " + cantidadIngresada);
-              esCantidadValida = false;
+  } while (!salir);
 
-           } else { 
-                  
-                    if (parseInt(cantidadIngresada) <= 0 ) {
+  console.log("LOG - 9999 - buscarArticulo");
+};
 
-                       alert("Debe Ingresar un Valor NUMERICO positivo, este valor es erroneo: " + cantidadIngresada);
-                       esCantidadValida = false;
+function  modificarArticuloMenu(){
 
-                    } else {
+  console.log("LOG - modificarArticulo - 0000");
 
-                       esCantidadValida = true;
+  let posicion;
 
-                   };
-            };
-        };
+  do {    
+      posicion = prompt("(Modificar Articulo) - Ingrese la posicion: ");
+  } while (!validarPosicion(posicion));
 
-      } while (!esCantidadValida);  
+  let articulo = ingresarArticuloValidado();
 
-  console.log("LOG - ingresarCantidad - 9999 - cantidad ingresada: " + cantidadIngresada) ;    
-  return cantidadIngresada;
+  productos.splice((posicion-1),1,articulo);
+  
+  console.log("LOG - modificarArticulo - 9999 ");
 
 };
 
+function eliminarArticuloMenu(){
+  console.log("LOG - eliminarArticulo - 0000");
+  let articulo;
+  let indice;
+  let salir;
 
-function ejecutarTransaccion (articulo,tipoTransaccion,cantidad){
+  do {    
 
-  console.log("LOG - ejecutarTransaccion - 0000") ;
-  console.log("LOG - ejecutarTransaccion - 0000 - Parametro articulo: " + articulo);
-  console.log("LOG - ejecutarTransaccion - 0000 - Parametro tipoTransaccion: " + tipoTransaccion);
-  console.log("LOG - ejecutarTransaccion - 0000 - Parametro cantidad: " + cantidad);
+       articulo = prompt("(Eliminar Articulo) - Nombre de articulo: ");
+ 
+       if (esNulo(articulo)) {                                    
+                  alert("(Eliminar Articulo) - Debe Ingresar un Valor");
+                  salir = false;
+      } else { 
+  
+             if (existeArticulo(articulo)){
+                 //alert("El articulo " + articulo + " SI existe, esta en la posicion " + (parseInt(obtenerIndiceArticulo(articulo))+1));
+                 indice = (parseInt(obtenerIndiceArticulo(articulo)));
+                 productos.splice(indice,1);
+                 salir = true;
+             } else {
+                 alert("(Eliminar Articulo) - El articulo " + articulo + " NO existe. ");
+                 salir = false;
+             };    
+       };
+  } while(!salir);
 
-  if (tipoTransaccion == 1){
-     console.log("LOG - ejecutarTransaccion - ALTA");
-     ejecutarTransaccionAlta(articulo,cantidad);
+  console.log("LOG - eliminarArticulo - 9999");
+};
+
+function eliminarArticuloPrimeroMenu(){
+  console.log("LOG - eliminarArticuloPrimeroMenu - 0000");
+  
+  
+  if (productos.length == 0){
+    alert("No existen productos en la lista");
   } else {
-     console.log("LOG - ejecutarTransaccion - BAJA");
-     ejecutarTransaccionBaja(articulo,cantidad);
+    let nombreArticulo = productos[0];
+    productos.shift();
+    alert ("Se ha eliminado el articulo "  + nombreArticulo + " de la primer posicion");
+    console.log("LOG - eliminarArticuloPrimeroMenu - 9999");
   };
-
-  console.log("LOG - ejecutarTransaccion - 9999 - fin.") ;
 };
 
-function ejecutarTransaccionAlta(articulo, cantidad){
+function eliminarArticuloUltimoMenu(){
+  console.log("LOG - eliminarArticuloUltimoMenu - 0000");
   
-  console.log("LOG - ejecutarTransaccionAlta - 0000") ;
-  console.log("LOG - ejecutarTransaccionAlta - 0000 - Parametro articulo: " + articulo);
-  console.log("LOG - ejecutarTransaccionAlta - 0000 - Parametro cantidad: " + cantidad);
-
-  switch (articulo.toUpperCase()) {
-          case "TORNILLOS":
-               //stockTornillos = parseInt(stockTornillos) + parseInt(cantidad);
-               stockTornillos = sumarCantidades(parseInt(stockTornillos),parseInt(cantidad));
-               console.log("LOG - ejecutarTransaccionAlta - 0010 - Stock Tornillos Actualizado = " + stockTornillos);
-               alert("Stock Tornillos Actualizado = " + stockTornillos);
-               break;
-          case "TUERCAS":
-               //stockTuercas = parseInt(stockTuercas) + parseInt(cantidad);
-               stockTuercas = sumarCantidades(parseInt(stockTuercas),parseInt(cantidad));
-               console.log("LOG - ejecutarTransaccionAlta - 0020 - Stock Tuercas Actualizado = " + stockTuercas);
-               alert("Stock Tuercas Actualizado = " + stockTuercas);
-               break;
-          default:
-               //stockClavos = parseInt(stockClavos) + parseInt(cantidad);
-               stockClavos = sumarCantidades(parseInt(stockClavos) , parseInt(cantidad));
-               console.log("LOG - ejecutarTransaccionAlta - 0030 - Stock Clavos Actualizado = " + stockClavos);
-               alert("Stock Clavos Actualizado = " + stockClavos);
+  if (productos.length == 0){
+    alert("No existen productos en la lista");
+  } else {
+    let nombreArticulo = productos[productos.length-1];
+    productos.pop();
+   alert ("Se ha eliminado el articulo "  + nombreArticulo + " de la ultima posicion");
   };
-  
-  console.log("LOG - ejecutarTransaccionAlta - 9999 - fin.") ;
 
+  console.log("LOG - eliminarArticuloUltimoMenu - 9999");
 };
 
-function ejecutarTransaccionBaja(articulo, cantidad){
-  
-  console.log("LOG - ejecutarTransaccionBaja - 0000");
-  console.log("LOG - ejecutarTransaccionBaja - 0000 - Parametro articulo: " + articulo);
-  console.log("LOG - ejecutarTransaccionBaja - 0000 - Parametro cantidad: " + cantidad);
+function listarArticulosMenu(){
+  let lista = "";
+  let i=1;
+  console.log("LOG - listarArticulos - 0000");
 
-  switch (articulo.toUpperCase()) {
-         case "TORNILLOS":
-                  
-              if (cantidad <= stockTornillos) { 
-                 //stockTornillos = parseInt(stockTornillos) - parseInt(cantidad);
-                 stockTornillos = restarCantidades(parseInt(stockTornillos) , parseInt(cantidad));
-                 console.log("LOG - ejecutarTransaccionBaja - 0010 - Stock Tornillos Actualizado = " + stockTornillos);
-                 alert("Stock Tornillos Actualizado = " + stockTornillos);
-              } else {
-                 console.log("LOG - ejecutarTransaccionBaja - 0020 - No hay stock de tornillos suficiente = " + stockTornillos + ", para la cantidad ingresada: " + cantidad + ". Cargue la transaccion nuevamente.");
-                 alert("No hay stock de tornillos suficiente = " + stockTornillos + ", para la cantidad ingresada: " + cantidad + ". Cargue la transaccion nuevamente.");
-              };
-              break;
-  
-         case "TUERCAS":
-                  
-              if (cantidad <= stockTuercas) { 
-                 //stockTuercas = parseInt(stockTuercas) - parseInt(cantidad);
-                 stockTuercas = restarCantidades(parseInt(stockTuercas) , parseInt(cantidad));
-                 console.log("LOG - ejecutarTransaccionBaja - 0030 - Stock Tuercas Actualizado = " + stockTuercas);
-                 alert("Stock Tuercas Actualizado = " + stockTuercas);
-              } else {
-                 console.log("LOG - ejecutarTransaccionBaja - 0040 - No hay stock de tuercas suficiente = " + stockTuercas+ ", para la cantidad ingresada: " + cantidad + ". Cargue la transaccion nuevamente.");
-                 alert("No hay stock de tuercas suficiente = " + stockTuercas+ ", para la cantidad ingresada: " + cantidad + ". Cargue la transaccion nuevamente.");
-              };
-              break;
+  if (productos.length == 0){
+     alert("(Listar Articulos) - No existen articulos para informar");
+  } else {
+     for (const producto of productos){
+         lista = lista + i + "-" + producto + "\n";
+         i++;
+     };
+     console.log("LOG - 0010 - listarArticulos -\nLista de Articulos:\n" + lista);
+     alert("(Listar Articulos) - Lista de Articulos:\n" + lista);
+  };
+  console.log("LOG - listarArticulos - 9999");
+};
 
-         default:                  
-                  
-              if (cantidad <= stockClavos) { 
-                 //stockClavos = parseInt(stockClavos) - parseInt(cantidad);
-                 stockClavos = restarCantidades(parseInt(stockClavos) , parseInt(cantidad));
-                 console.log("LOG - ejecutarTransaccionBaja - 0050 - Stock Clavos Actualizado = " + stockClavos);
-                 alert("Stock Clavos Actualizado = " + stockClavos);
-              } else {
-                
-                 console.log("LOG - ejecutarTransaccionBaja - 0050 - No hay stock de clavos suficiente = " + stockClavos + ", para la cantidad ingresada: " + cantidadArticulo + ". Cargue la transaccion nuevamente.");
-                 alert("No hay stock de clavos suficiente = " + stockClavos + ", para la cantidad ingresada: " + cantidad + ". Cargue la transaccion nuevamente.");
-              };
-        };
+/*
+  FUNCIONES DE SEGUNDO NIVEL
+*/
+function ingresarArticuloValidado(){
 
-  console.log("LOG - ejecutarTransaccionBaja - 9999 - fin.");
-}
+  console.log("LOG - ingresarArticulo - 0000");
 
-function evaluarDecision (){
+  let articulo;
 
-  console.log("LOG - evaluarDecision - 0000") ;
-
-  let decisionIngresada;
-  let esDecisionValida;
-  let continuaProceso;
-  
   do {
+       articulo = prompt("(Ingresar Articulo) - Nombre de articulo: ");      
+  } while(!validarArticulo(articulo));
 
-        decisionIngresada = prompt("Desea continuar(escriba en mayusculas SI/NO): ");
-        console.log("LOG - evaluarDecision - 0010 - decisionIngresada: " + decisionIngresada) ;
+  console.log("LOG - ingresarArticulo - 9999");
 
-        switch (decisionIngresada.toUpperCase()){
-        
-                case "SI":
-                      continuaProceso = true;
-                      esDecisionValida = true;
-                      break;
-                case "NO":
-                      continuaProceso = false;
-                      esDecisionValida = true;
-                      break;
+  return articulo;
+};
+
+function validarArticulo(articulo){
+
+  console.log("LOG - validarArticulo - 0000");
+
+  if (esNulo(articulo)) {
+     alert("(Validar Articulo) - Debe ingresar un valor.");   
+     return false;       
+  } else {
+          if (existeArticulo(articulo)){
+             alert("(Validar Articulo) - El articulo " + articulo.toUpperCase() + " ya existe.");
+             return false;
+          } else {
+             return true;
+          };
+  };
+
+  console.log("LOG - validarArticulo - 9999");
+
+};
+
+function ingresarOrden(){
+
+  console.log("LOG - ingresarOrden - 0000");
+
+  let orden;
+
+  do {
+       orden = prompt("(Ingresar Articulo) - Ingrese el orden del articulo, al principio(P) o al final(F)?");
+  } while (!validarOrden(orden));
+
+  console.log("LOG - ingresarOrden - 9999");
+
+  return orden;
+};
+
+function validarOrden(orden){
+  console.log("LOG - validarOrden - 0000");
+  if (esNulo(orden)) {
+       alert("(Valida Orden) - Debe Ingresar un Valor");                    
+  } else { 
+                    
+          switch(orden.toUpperCase()){
+                case "P":
+                    return true;
+                    break;
+                case "F":
+                    return true;
+                    break;
                 default:
-                      console.log("LOG - evaluarDecision - 0030 - decision ingresada: " + decisionIngresada);
-                      alert("ERROR: Error, si decide continuar, escriba en mayusculas SI/NO");
-                      esDecisionValida = false;
-           }
+                    alert("(Valida Orden) - Opcion incorrecta, vuelva a ingresar.");
+                    return false;
+          };
 
-      } while (!esDecisionValida);
+  };
+    
+  console.log("LOG - validarOrden - 9999");
+};
 
-  console.log("LOG - evaluarDecision - 9999 - decisionIngresada: " + decisionIngresada) ;
 
-  return continuaProceso;
+
+function validarPosicion(posicion){
+
+  if (esNulo(posicion)) { 
+         alert("(Validar Articulo) - ERROR: Debe ingresar un valor");
+         return false;
+  } else { 
+          if (esString(posicion)) {
+             alert("(Validar Articulo) - ERROR: Debe ingresar un valor numerico, este valor es erroneo: " + posicion);
+             return false;
+          } else { 
+                  if (parseInt(posicion) <= 0 ) {
+                      alert("(Validar Articulo) - ERROR: Debe ingresar un valor numerico positivo, este valor es erroneo: " + posicion);
+                      return false;
+                  }; 
+                  if (parseInt(posicion) > productos.length){
+                      alert("(Validar Articulo) - Debe ingresar una posicion valida, la ultima posicion es " + productos.length + ", este valor es erroneo: " + posicion);
+                      return false;
+                  };
+          };
+          return true;
+ };
+ 
+};
+
+/*
+  FUNCIONES MAS ATOMIZADAS
+*/
+function esNulo(valor){
+  //if(valor.length == 0){return true}; return false;
+  if(valor == null){return true}; return false;
+};
+
+function esString(valor){
+  if (isNaN(Number(valor))) {return true}; return false;
+};
+
+function existeArticulo(articulo){
+  if (productos.includes(articulo.toUpperCase())){ return true}; return false;
+};
+
+function obtenerIndiceArticulo(articulo){
+  return parseInt(productos.indexOf(articulo.toUpperCase()));
+};
+
+function obtenerArticuloPorIndice(indice){
+  return productos[indice];
 };
