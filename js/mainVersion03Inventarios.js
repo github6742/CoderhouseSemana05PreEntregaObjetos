@@ -47,10 +47,11 @@ class Estado {
 };
 
 class Categoria{
-    constructor(codigo, nombre, descripcion){
+    constructor(codigo, nombre, descripcion, nivel){
         this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.nivel = nivel;
     };
 };
 
@@ -79,18 +80,18 @@ class ListaPrecios{
         this.descripcion = descripcion;
         this.listaBase = listaBase;
         this.descuento = descuento;
-        this.increment = incremento;
-        this.unidadVaricacion = unidadVariacion;
+        this.incremento = incremento;
+        this.unidadVariacion = unidadVariacion;
         this.moneda = moneda;
     };
 };
 
 class ListaPreciosArticulos{
-    constructor(idLista, nombreArticulo, descripcionArticulo, precio, unidadVenta){
+    constructor(idLista, nombreArticulo, descripcionArticulo, precioVenta, unidadVenta){
         this.idLista = idLista;
         this.nombreArticulo = nombreArticulo;
         this.descripcionArticulo = descripcionArticulo;
-        this.precio = precio;
+        this.precioVenta = precioVenta;
         this.unidadVenta = unidadVenta;
     };
 };
@@ -149,7 +150,7 @@ class Stock {
         this.planta = planta;
         this.subinventario = subinventario;
         this.ubicacion = ubicacion;
-    }
+    };
 };
 
 class Inventario {
