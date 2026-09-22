@@ -34,21 +34,20 @@ class Articulo {
       };
 
       modificaCostoPesosPorcentaje(porcentaje){
-        this.costoPesos += (this.costoPesos*(porcentaje/100));
+        costoPesos += (costoPesos*(porcentaje/100));
       };
-      //incrementaCostoPesos = (porcentaje) => (this.costoPesos*porcentaje);
+      
 };
 
 //CLASE DE MODULO DE INVENTARIO
 class ModuloInventario{
     constructor(){     
-       this.maestroArticulos = [];      
-       this.maestroArticulosCargados = false; 
+       this.maestroArticulos = [];    
     };
 
     cargaInicial(){
 
-        if (!this.maestroArticulosCargados) {
+        if (maestroArticulos.length == 0) {
         const articulo1 = new Articulo("B240000",//CODIGO
                                        "TELEVISOR SMART TV PHILCO 33 PULGADAS", //NOMBRE
                                        "UN",//UNIDAD
@@ -120,13 +119,11 @@ class ModuloInventario{
                                         60000, //COSTO PESOS
                                         400); //costo usd                                        
 
-        this.maestroArticulos.push(articulo1);
-        this.maestroArticulos.push(articulo2);
-        this.maestroArticulos.push(articulo3);
-        this.maestroArticulos.push(articulo4);
-        this.maestroArticulosCargados = true;
+        maestroArticulos.push(articulo1);
+        maestroArticulos.push(articulo2);
+        maestroArticulos.push(articulo3);
+        maestroArticulos.push(articulo4);
     } else {
-
         console.log("Ya se realizo la carga inicial de articulos");
         alert("Ya se realizo la carga inicial de articulos");
     };
@@ -134,9 +131,8 @@ class ModuloInventario{
 
     informarListaArticulos(){
         let mensaje = "Listado de Articulos: \n";
-        //console.log("Listado de Articulos: ")
+        
         for ( const articulo of this.maestroArticulos) {
-            //console.log(articulo.codigo + '-' + articulo.nombre);
             mensaje += articulo.codigo + '-' + articulo.nombre + ' - Costo: ' +  articulo.costoPesos + "\n";
         };
         console.log(mensaje);
@@ -164,7 +160,6 @@ function functionPrincipalSimulador(){
   console.log("LOG - ----------------------------------"); 
 
   const moduloInventario = new ModuloInventario();
-
 
   let salir = false;
 
@@ -229,8 +224,6 @@ function seleccionarOpcionMenu(){
 
 function validarPorcentaje(porcentaje){
 
-     console.log("LOG - validarPorcentaje - 0000");
-  
      if (esNulo(porcentaje)) {
         alert("(Validar Porcenaje) - Debe Ingresar un Valor");                    
         return false;
@@ -240,10 +233,10 @@ function validarPorcentaje(porcentaje){
       } else {
         return true;
      };
-  console.log("LOG - validarPorcentaje - 9999");
 };
 
 
+// funciones mas atomicas
 function esNulo(valor){
   if(valor == null){return true}; return false;
 };
